@@ -26,9 +26,9 @@ export async function createFood(newFood, token) {
         Authorization: `Bearer ${token}`,
       }
     }).catch(err => {
-      status.error = true;
-      status.responseData = err;
-    });
+    status.error = true;
+    status.responseData = err;
+  });
   return status;
 }
 
@@ -47,7 +47,7 @@ export async function deleteFood(id, token) {
       status.error = true;
       status.responseData = err;
     });
-  return status; 
+  return status;
 }
 
 export async function editFood(food, token) {
@@ -59,8 +59,9 @@ export async function editFood(food, token) {
         Authorization: `Bearer ${token}`,
       }
     }).catch(err => {
-      status.error = true;
-      status.responseData = err;
-    });
+    status.error = true;
+    status.responseData = err;
+  });
   return status;
 }
+

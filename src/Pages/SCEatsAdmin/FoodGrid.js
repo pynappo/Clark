@@ -31,7 +31,7 @@ export default function FoodGrid({ foods, editingId, editedFood, setEditedFood, 
                 />
               </>
             ) : (
-              <p></p>
+              <span></span>
             )}
           </p>
 

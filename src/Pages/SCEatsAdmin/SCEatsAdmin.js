@@ -5,6 +5,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 import FoodGrid from './FoodGrid';
+import FoodForm from './FoodForm';
 
 export default function SCEatsAdmin(props) {
   const [foods, setFoods] = useState([]);
@@ -79,85 +80,39 @@ export default function SCEatsAdmin(props) {
           Field Inputs for Food name, photo URL, quantity, price, expiration
       */}
 
-      <div className="mt-10 flex flex-col md:grid md:grid-cols-1 md:gap-x-6 md:gap-y-8 lg:flex lg:flex-row md:flex-wrap lg:gap-x-6 lg:gap-y-8">
-        <div className="flex-1 min-w-[200px]">
-          <label className="form-control w-full max-w-xs">
-            <div className="label">
-              <span className="label-text">Food Name</span>
-            </div>
-            <input type="text" placeholder="For example, Cheetos" className="input input-bordered w-full max-w-xs" onChange={e => setName(e.target.value)} />
-          </label>
-        </div>
-        <div className="flex-1 min-w-[200px]">
-          <label htmlFor="photo" className='block text-sm font-medium leading-6 text-gray-300'>
-            Photo
-          </label>
-          <div className="mt-2">
-            <input
-              type="text"
-              name="photo"
-              id="photo"
-              value={photo}
-              onChange={e => setPhoto(e.target.value)}
-              className={INPUT_CLASS}
-            />
-          </div>
-        </div>
-        <div className="flex-1 min-w-[200px]">
-          <label htmlFor="price" className='block text-sm font-medium leading-6 text-gray-300'>
-            Price
-          </label>
-          <div className="mt-2">
-            <input
-              type="text"
-              name="price"
-              id="price"
-              value={price}
-              onChange={e => setPrice(e.target.value)}
-              className={INPUT_CLASS}
-            />
-          </div>
-        </div>
-        <div className="flex-1 min-w-[200px]">
-          <label htmlFor="quantity" className='block text-sm font-medium leading-6 text-gray-300'>
-            Quantity
-          </label>
-          <div className="mt-2">
-            <input
-              type="text"
-              name="quantity"
-              id="quantity"
-              value={quantity}
-              onChange={e => setQuantity(e.target.value)}
-              className={INPUT_CLASS}
-            />
-          </div>
-        </div>
-        <div className="flex-1 min-w-[200px]">
-          <label htmlFor="expiration" className='block text-sm font-medium leading-6 text-gray-300'>
-            Expiration Date
-          </label>
-          <div className="mt-2">
-            <DatePicker
-              name="expiration"
-              id="expiration"
-              selected={expiration}
-              onChange={(date) => setExpiration(date)}
-              dateFormat="MM-dd-y"
-              className={INPUT_CLASS}
-            />
-          </div>
-        </div>
-      </div>
-      <div className="flex-1 flex mt-8">
-        <button
-          type="submit"
-          className="rounded-md bg-indigo-600 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          onClick={() => handleCreate()}
-        >
-          Save
-        </button>
-      </div>
+      {/* You can open the modal using document.getElementById('ID').showModal() method */}
+      <button
+        className="btn btn-circle btn-primary fixed bottom-4 right-4 shadow-lg w-16 h-16"
+        onClick={() => document.getElementById('my_modal_3').showModal()}
+      >
+        <span className="text-3xl">+</span>
+      </button>
+      <dialog id="my_modal_3" className="modal">
+        <form method="dialog" className="modal-box">
+          {/* if there is a button in form, it will close the modal */}
+          <button className="btn label-text btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+          <h3 className="font-bold text-lg">Create New Food</h3>
+          <FoodForm
+            setName={setName}
+            setPhoto={setPhoto}
+            setPrice={setPrice}
+            setQuantity={setQuantity}
+            expiration={expiration}
+            setExpiration={setExpiration}
+          />
+          <button
+            type="submit"
+            className="rounded-md bg-indigo-600 mt-3 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            onClick={() => handleCreate()}
+          >
+            Save
+          </button>
+        </form>
+        <form method="dialog" className="modal-backdrop">
+          <button>close</button>
+        </form>
+      </dialog>
+
 
       {/*
           Grid of Food
@@ -165,7 +120,7 @@ export default function SCEatsAdmin(props) {
 
       <div>
         <FoodGrid
-          foods = {foods}
+          foods={foods}
           editingId={editingId}
           editedFood={editedFood}
           setEditedFood={setEditedFood}
