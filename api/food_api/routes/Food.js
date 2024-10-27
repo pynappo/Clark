@@ -15,6 +15,7 @@ router.post('/createFood', (req, res) => {
 
   const newFood = new Food({
     name: req.body.name,
+    type: req.body.type,
     photo: req.body.photo,
     price: isValidNumber(price) ? Number(price) : undefined,
     quantity: isValidNumber(quantity) ? Number(quantity) : undefined,
@@ -42,6 +43,7 @@ router.get('/getFoods', (req, res) => {
 router.post('/editFood', (req, res) => {
   const {
     name,
+    type,
     photo,
     price,
     quantity,
@@ -52,6 +54,7 @@ router.post('/editFood', (req, res) => {
   Food.findOne({ _id })
     .then(Food => {
       Food.name = name || Food.name;
+      Food.type = type || Food.type;
       Food.photo = photo || Food.photo;
       Food.price = price || Food.price;
       Food.quantity = quantity || Food.quantity;
