@@ -69,7 +69,6 @@ export default function URLShortenerPage(props) {
       expireDate,
       props.user.token
     );
-    console.log(response);
     if (!response.error) {
       setAllUrls([...allUrls, response.responseData]);
       setAliasTaken(false);
