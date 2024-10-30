@@ -27,8 +27,13 @@ export default function URLShortenerPage(props) {
   const [toggleDelete, setToggleDelete] = useState(false);
   const [currentSortColumn, setCurrentSortColumn] = useState(null);
   const [currentSortOrder, setCurrentSortOrder] = useState(null);
+  const [expireDate, setExpireDate] = useState('');
+  const [expirationMessage, setExpirationMessage] = useState('');
 
-  const INPUT_CLASS = 'indent-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 text-white';
+  const date = new Date();
+  const minDate = date.toISOString().split('T')[0];
+  const INPUT_CLASS =
+    'indent-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 text-white';
   const LABEL_CLASS = 'block text-sm font-medium leading-6 text-gray-300';
 
   /**
@@ -61,16 +66,19 @@ export default function URLShortenerPage(props) {
     const response = await createUrl(
       url.trim(),
       alias.trim(),
+      expireDate,
       props.user.token
     );
+    console.log(response);
     if (!response.error) {
       setAllUrls([...allUrls, response.responseData]);
       setAliasTaken(false);
       setUrl('');
       setAlias('');
+      setExpireDate('');
       setShowUrlInput(false);
       setTotal(total + 1);
-      setSuccessMessage(`Sucessfully created shortened link ${response.responseData.link}`);
+      setSuccessMessage(`Sucessfully created shortened link ${response.responseData.link} ${expirationMessage}`);
       setTimeout(() => {
         setSuccessMessage(null);
       }, 5000);
@@ -167,6 +175,14 @@ export default function URLShortenerPage(props) {
   useEffect(() => {
     setAliasTaken(false);
   }, [alias]);
+
+  useEffect(() => {
+    if (expireDate) {
+      setExpirationMessage(`The URL will expire on ${expireDate} at 12:00 AM PT.`);
+    } else {
+      setExpirationMessage('');
+    }
+  }, [expireDate]);
 
   useEffect(() => {
     getCleezyUrls(page, searchQuery, currentSortColumn, currentSortOrder);
@@ -288,6 +304,21 @@ export default function URLShortenerPage(props) {
                 </div>
               </div>
             )}
+            <div className="col-span-3">
+              <label htmlFor="expireDate" className={LABEL_CLASS}>
+                Expiration Date (Optional)
+              </label>
+              <div className="mt-2">
+                <input
+                  type="date"
+                  id="expireDate"
+                  value={expireDate}
+                  onChange={(e) => setExpireDate(e.target.value)}
+                  min={minDate}
+                  className={INPUT_CLASS}
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
